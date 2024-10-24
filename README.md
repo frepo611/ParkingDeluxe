@@ -50,3 +50,8 @@ Antal parkeringsplatser: 15
 - Koden ska visa god förståelse för objektorienterade principer, med tanke på inkapsling, arv, astraktion och polymorfism.
 - Koden ska vara “DRY”
 - Uppgiften ska göras individuellt.
+# Övrigt
+- Uppgiften är inte extra svår, men ställer mer krav på hur koden ser ut och fungerar.
+- Tiden är en faktor, då du samtidigt ska hinna göra G-uppgiften.
+- Det är inte säkert att betyget blir VG bara för att du lämnar in uppgiften, den kommer granskas extra noggrant.
+- Den ska utföras självständigt, utan större hjälp.
