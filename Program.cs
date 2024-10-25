@@ -1,9 +1,14 @@
-﻿namespace ParkingDeluxe;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ParkingDeluxe;
 
 internal class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        var car = new Car();
+        var mc = new MC();
+        var bus = new Bus();
     }
+
 }
