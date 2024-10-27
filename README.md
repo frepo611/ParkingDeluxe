@@ -23,7 +23,7 @@ Antal parkeringsplatser: 15
 # Regler
 - Ett slumpmässigt fordon anländer till parkeringshuset. 
 - Beroende på vilken typ av fordon ska användaren mata in uppgifterna (Regnr kan automatgenereras)
-- Därefter ska en algoritm placera fodonet på lämplig plats
+- Därefter ska en algoritm placera fordonet på lämplig plats
 - En lista med alla fordon ritas ut, som kan se ut såhär:
 
 | Plats | Typ  | Registreringsnummer | Färg  | Övrigt  |
