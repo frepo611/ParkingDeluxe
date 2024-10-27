@@ -2,8 +2,13 @@
 {
     public class RegistrationNumber
     {
-        private char[] _letters = new char[3];
         private int _numbers;
+        private string _letters;
         public string RegNumber => $"{_letters}{_numbers}";
+        public RegistrationNumber(int numbers, string letters)
+        {
+            _numbers = numbers;
+            _letters = letters;
+        }
     }
 }
