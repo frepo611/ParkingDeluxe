@@ -1,4 +1,5 @@
-﻿namespace ParkingDeluxe
+﻿
+namespace ParkingDeluxe
 {
     public class Bus : Vehicle
     {
@@ -6,6 +7,11 @@
         public Bus(RegistrationNumber regNumber, string color, int noOfPassengers) :base(regNumber, color)
         {
             NoOfPassengers = noOfPassengers;
+        }
+
+        public override void Park(List<ParkingSpot> parkingSpace)
+        {
+            throw new NotImplementedException();
         }
     }
 }

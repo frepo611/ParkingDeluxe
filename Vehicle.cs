@@ -1,8 +1,6 @@
-﻿using System.Drawing;
+﻿namespace ParkingDeluxe;
 
-namespace ParkingDeluxe;
-
-public class Vehicle
+public abstract class Vehicle
 {
     public RegistrationNumber RegistrationNumber { get;}
     public string Color { get; }
@@ -11,4 +9,5 @@ public class Vehicle
         RegistrationNumber = regNumber;   
         Color = color;
     }
+    public abstract void Park(List<ParkingSpot> parkingSpace);
 }
