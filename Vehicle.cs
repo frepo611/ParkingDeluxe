@@ -9,5 +9,16 @@ public abstract class Vehicle
         RegistrationNumber = regNumber;   
         Color = color;
     }
-    public abstract void Park(List<ParkingSpot> parkingSpace);
+    public override string ToString()
+    {   
+        string misc = this switch
+        {
+            Car c => c.IsElectric ? "Elbil" : "Ingen elbil",
+            MC m => m.Brand,
+            Bus b => $"{b.NoOfPassengers} passagerare",
+            _ => throw new InvalidOperationException("Unexpected vehicle type")
+        };
+
+        return $"{this.RegistrationNumber.RegNumber,-8} {this.GetType().Name,-6} {this.Color,-8}  {misc}";
+    }
 }

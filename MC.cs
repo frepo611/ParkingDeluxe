@@ -8,10 +8,5 @@ namespace ParkingDeluxe
         {
             Brand = brand;
         }
-
-        public override void Park(List<ParkingSpot> parkingSpace)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
