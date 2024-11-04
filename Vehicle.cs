@@ -4,10 +4,13 @@ public abstract class Vehicle
 {
     public RegistrationNumber RegistrationNumber { get;}
     public string Color { get; }
-    public Vehicle(RegistrationNumber regNumber, string color)
+    public int Size { get; }
+    public Vehicle(RegistrationNumber regNumber, string color, int size)
     {
         RegistrationNumber = regNumber;   
         Color = color;
+        Size = size;
+
     }
     public override string ToString()
     {   
