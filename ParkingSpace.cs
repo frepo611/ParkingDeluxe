@@ -44,23 +44,27 @@ namespace ParkingDeluxe
             }
         }
 
-        public void Park(Vehicle vehicle)
+        public bool Park(Vehicle vehicle)
         {
+            bool parkingSuccess;
             if (vehicle is Car)
             {
                 Car car = (Car)vehicle;
-                Park(car);
+                parkingSuccess = Park(car);
             }
             else if (vehicle is MC)
             {
                 MC mc = (MC)vehicle;
-                Park(mc);
+                return Park(mc);
             }
             else if (vehicle is Bus)
             {
                 Bus bus = (Bus)vehicle;
-                Park(bus);
+                return Park(bus);
             }
+            else throw new ArgumentException("Cannot park this vehicle.");
+            vehicle.StartTimedAction();
+            return parkingSuccess;
         }
         public bool Checkout(Vehicle vehicle)
         {
@@ -82,6 +86,7 @@ namespace ParkingDeluxe
                 Bus bus = (Bus)vehicle;
                 checkoutSuccess = Checkout(bus);
             }
+            vehicle.EndTimedAction();
             return checkoutSuccess;
         }
 
@@ -97,8 +102,8 @@ namespace ParkingDeluxe
             }
             if (parkingSuccess)
             {
-                ParkingSpots[parkingSpotIndex].OccupiedBy = car;
-                ParkingSpots[parkingSpotIndex + 1].OccupiedBy = car;
+                ParkingSpots[parkingSpotIndex].OccupyingVechicle = car;
+                ParkingSpots[parkingSpotIndex + 1].OccupyingVechicle = car;
                 ParkingSpots[parkingSpotIndex].IsEmpty = false;
                 ParkingSpots[parkingSpotIndex + 1].IsEmpty = false;
             }
@@ -128,7 +133,7 @@ namespace ParkingDeluxe
             }
             if (parkingSuccess)
             {
-                ParkingSpots[parkingSpotIndex].OccupiedBy = mc;
+                ParkingSpots[parkingSpotIndex].OccupyingVechicle = mc;
                 ParkingSpots[parkingSpotIndex].IsEmpty = false;
             }
             return parkingSuccess;
@@ -137,22 +142,22 @@ namespace ParkingDeluxe
         {
             bool parkingSuccess = false;
             int parkingSpotIndex = GetStartOfLargestEmptySpace();
-                if (ParkingSpots[parkingSpotIndex].IsEmpty
-                    && ParkingSpots[parkingSpotIndex + 1].IsEmpty
-                    && ParkingSpots[parkingSpotIndex + 2].IsEmpty
-                    && ParkingSpots[parkingSpotIndex + 3].IsEmpty)
-                {
-                    parkingSuccess = true;
+            if (ParkingSpots[parkingSpotIndex].IsEmpty
+                && ParkingSpots[parkingSpotIndex + 1].IsEmpty
+                && ParkingSpots[parkingSpotIndex + 2].IsEmpty
+                && ParkingSpots[parkingSpotIndex + 3].IsEmpty)
+            {
+                parkingSuccess = true;
             }
             if (parkingSuccess)
             {
-                ParkingSpots[parkingSpotIndex].OccupiedBy = bus;
+                ParkingSpots[parkingSpotIndex].OccupyingVechicle = bus;
                 ParkingSpots[parkingSpotIndex].IsEmpty = false;
-                ParkingSpots[parkingSpotIndex + 1].OccupiedBy = bus;
+                ParkingSpots[parkingSpotIndex + 1].OccupyingVechicle = bus;
                 ParkingSpots[parkingSpotIndex + 1].IsEmpty = false;
-                ParkingSpots[parkingSpotIndex + 2].OccupiedBy = bus;
+                ParkingSpots[parkingSpotIndex + 2].OccupyingVechicle = bus;
                 ParkingSpots[parkingSpotIndex + 2].IsEmpty = false;
-                ParkingSpots[parkingSpotIndex + 3].OccupiedBy = bus;
+                ParkingSpots[parkingSpotIndex + 3].OccupyingVechicle = bus;
                 ParkingSpots[parkingSpotIndex + 3].IsEmpty = false;
             }
             return parkingSuccess;
@@ -162,10 +167,10 @@ namespace ParkingDeluxe
             bool checkoutSuccess = false;
             for (int i = 0; i < Count; i++)
             {
-                if (ParkingSpots[i].OccupiedBy == car)
+                if (ParkingSpots[i].OccupyingVechicle == car)
                 {
-                    ParkingSpots[i].OccupiedBy = null;
-                    ParkingSpots[i + 1].OccupiedBy = null;
+                    ParkingSpots[i].OccupyingVechicle = null;
+                    ParkingSpots[i + 1].OccupyingVechicle = null;
                     ParkingSpots[i].IsEmpty = true;
                     ParkingSpots[i + 1].IsEmpty = true;
                     checkoutSuccess = true;
@@ -179,9 +184,9 @@ namespace ParkingDeluxe
             bool checkoutSuccess = false;
             for (int i = 0; i < Count; i++)
             {
-                if (ParkingSpots[i].OccupiedBy == mc)
+                if (ParkingSpots[i].OccupyingVechicle == mc)
                 {
-                    ParkingSpots[i].OccupiedBy = null;
+                    ParkingSpots[i].OccupyingVechicle = null;
                     ParkingSpots[i].IsEmpty = true;
                     checkoutSuccess = true;
                     break;
@@ -192,17 +197,17 @@ namespace ParkingDeluxe
         private bool Checkout(Bus bus)
         {
             bool checkoutSuccess = false;
-            for (int i = 0; i < Count - 4; i += 4 )
+            for (int i = 0; i < Count - 4; i += 4)
             {
-                if (ParkingSpots[i].OccupiedBy == bus)
+                if (ParkingSpots[i].OccupyingVechicle == bus)
                 {
-                    ParkingSpots[i].OccupiedBy = null;
+                    ParkingSpots[i].OccupyingVechicle = null;
                     ParkingSpots[i].IsEmpty = true;
-                    ParkingSpots[i + 1].OccupiedBy = null;
+                    ParkingSpots[i + 1].OccupyingVechicle = null;
                     ParkingSpots[i + 1].IsEmpty = true;
-                    ParkingSpots[i + 2].OccupiedBy = null;
+                    ParkingSpots[i + 2].OccupyingVechicle = null;
                     ParkingSpots[i + 2].IsEmpty = true;
-                    ParkingSpots[i + 3].OccupiedBy = null;
+                    ParkingSpots[i + 3].OccupyingVechicle = null;
                     ParkingSpots[i + 3].IsEmpty = true;
                     checkoutSuccess = true;
                     break;
