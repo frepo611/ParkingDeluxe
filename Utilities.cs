@@ -71,7 +71,7 @@ public class Utilities
         while (!vehicleCheckedOut)
         {
             int randomSpot = Random.Shared.Next(parking.ParkingSpots.Count);
-            vehicleCheckedOut = parking.Checkout(parking.ParkingSpots[randomSpot].OccupiedBy);
+            vehicleCheckedOut = parking.Checkout(parking.ParkingSpots[randomSpot].OccupyingVechicle);
         }
     }
 }

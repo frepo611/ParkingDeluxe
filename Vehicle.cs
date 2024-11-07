@@ -1,10 +1,13 @@
 ﻿namespace ParkingDeluxe;
 
-public abstract class Vehicle
+public abstract class Vehicle : ITimed
 {
     public RegistrationNumber RegistrationNumber { get;}
     public string Color { get; }
     public int Size { get; }
+
+    private DateTime _parkingStartTime;
+    private DateTime _parkingEndTime;
     public Vehicle(RegistrationNumber regNumber, string color, int size)
     {
         RegistrationNumber = regNumber;   
@@ -24,4 +27,18 @@ public abstract class Vehicle
 
         return $"{this.RegistrationNumber.RegNumber,-8} {this.GetType().Name,-6} {this.Color,-8}  {misc}";
     }
+
+    public void StartTimedAction()
+    {
+        _parkingStartTime = DateTime.Now;
+    }
+    public void EndTimedAction()
+    {
+        _parkingEndTime = DateTime.Now;
+    }
+    public TimeSpan GetElapsedTime()
+    {
+        return _parkingEndTime - _parkingStartTime;
+    }
+
 }
