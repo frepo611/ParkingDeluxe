@@ -46,32 +46,14 @@ public partial class Utilities
         string[] mcBrands = McBrands.AvailableBrands;
         return mcBrands[Random.Shared.Next(mcBrands.Length)];
     }
-    private enum Colors
+    public static Vehicle? CheckoutRandomVehicle(ParkingSpace parking)
     {
-        Black,
-        White,
-        Red,
-        Green,
-        Yellow,
-        Blue,
-        Silver
-    }
-    private enum McBrands
-    {
-        HarleyDavidson,
-        BMW,
-        Yamaha,
-        Suzuki,
-        Aprilia,
-        Honda
-    }
-    public static void CheckoutRandomVehicle(ParkingSpace parking)
-    {
-        bool vehicleCheckedOut = false;
-        while (!vehicleCheckedOut)
+        Vehicle? checkedOutVehicle = null;
+        while (checkedOutVehicle == null)
         {
             int randomSpot = Random.Shared.Next(parking.ParkingSpots.Count);
-            vehicleCheckedOut = parking.Checkout(parking.ParkingSpots[randomSpot].OccupyingVechicle);
+            checkedOutVehicle = parking.Checkout(parking.ParkingSpots[randomSpot].OccupyingVechicle);
         }
+        return checkedOutVehicle;
     }
 }
