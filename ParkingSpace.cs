@@ -16,11 +16,17 @@ namespace ParkingDeluxe
 
         public bool Park(Vehicle vehicle)
         {
-            if (!ParkFirstPerfectFit(vehicle))
+            if (ParkFirstPerfectFit(vehicle))
             {
-                return ParkFirstFit(vehicle);
+                vehicle.StartTimer();
+                return true;
             }
-            return true;
+            else if (ParkFirstFit(vehicle))
+            {
+                vehicle.StartTimer();
+                return true;
+            }
+            return false;
         }
 
         private bool ParkFirstPerfectFit(Vehicle vehicle)
