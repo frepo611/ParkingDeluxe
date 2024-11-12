@@ -5,9 +5,86 @@ namespace ParkingDeluxe
     {
         public List<HalfParkingSpot> ParkingSpots { get; }
         public int Count { get => ParkingSpots.Count; }
+        public ParkingSpace(int size)
+        {
+            ParkingSpots = new List<HalfParkingSpot>(size * 2);
+            for (int i = 0; i < (size * 2); i++)
+            {
+                ParkingSpots.Add(new HalfParkingSpot(i));
+            }
+        }
+
+        public bool Park(Vehicle vehicle)
+        {
+            if (!ParkFirstPerfectFit(vehicle))
+            {
+                return ParkFirstFit(vehicle);
+            }
+            return true;
+        }
+
+        private bool ParkFirstPerfectFit(Vehicle vehicle)
+        {
+            for (int i = 0; i < Count - vehicle.Size; i += (vehicle.Size == 1) ? 1 : 2)
+            {
+                bool perfectFit = true;
+                // check if the entire vehicle can fit
+                for (global::System.Int32 j = 0; j < vehicle.Size; j++)
+                {
+                    if (!ParkingSpots[i + j].IsEmpty)
+                    {
+                        perfectFit = false;
+                        break;
+                    }
+                    if (!ParkingSpots[i + vehicle.Size].IsEmpty)
+                    {
+                        perfectFit = false;
+                        break;
+                    }
+                }
+                if (perfectFit)
+                {
+                    for (int j = 0; j < vehicle.Size; j++)
+                    {
+                        ParkingSpots[i + j].IsEmpty = false;
+                        ParkingSpots[i + j].OccupyingVechicle = vehicle;
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool ParkFirstFit(Vehicle vehicle)
+        {
+            for (int i = 0; i < Count - vehicle.Size; i += (vehicle.Size == 1) ? 1 : 2)
+            {
+                bool canFit = true;
+                // check if the entire vehicle can fit
+                for (global::System.Int32 j = 0; j < vehicle.Size; j++)
+                {
+                    if (!ParkingSpots[i + j].IsEmpty)
+                    {
+                        canFit = false;
+                        break;
+                    }
+                }
+                if (canFit)
+                {
+                    for (int j = 0; j < vehicle.Size; j++)
+                    {
+                        ParkingSpots[i + j].IsEmpty = false;
+                        ParkingSpots[i + j].OccupyingVechicle = vehicle;
+                    }
+                    return true;
+                }
+            }
+            return false;
+        }
 
         private int GetStartOfLargestEmptySpace()
         {
+
             int startIndex = 0;
             int largestSpace = 0;
             int currentSpace = 0;
