@@ -1,6 +1,4 @@
 ﻿
-using System.ComponentModel.Design;
-
 namespace ParkingDeluxe
 {
     internal class ConsoleUI
@@ -25,7 +23,9 @@ namespace ParkingDeluxe
                         _garage.Park(Utilities.GetRandomVehicle());
                         break;
                     case ConsoleKey.C:
-                        Utilities.CheckoutRandomVehicle(_garage);
+                        Vehicle vehicle = Utilities.CheckoutRandomVehicle(_garage);
+                        Console.WriteLine($"{vehicle} was checked out. {vehicle.GetElapsedTime}");
+                        Console.ReadKey();
                         break;
                     case ConsoleKey.Q:
                         runAgain = false;
@@ -38,17 +38,51 @@ namespace ParkingDeluxe
                         Console.WriteLine($"{_garage.ParkingSpots[i].ID}: {_garage.ParkingSpots[i].OccupyingVechicle}");
                     }
                 }
-                ShowMainMenu();
-                ListParkedVehicles();
+                //ShowMainMenu();
+                //ListParkedVehicles();
             }
         }
 
         private void ShowMainMenu()
         {
             Console.WriteLine("1. Parkera ett fordon");
-            Console.WriteLine("1. Checka ut ett fordon");
-            Console.WriteLine("Avsluta");
+            Console.WriteLine("2. Checka ut ett fordon");
+            Console.WriteLine("3. Avsluta");
 
+            ConsoleKeyInfo keyPress = Console.ReadKey(true);
+            switch (keyPress.Key)
+            {
+                case ConsoleKey.D1:
+                    ParkMenu();
+                    break;
+                case ConsoleKey.D2:
+                    CheckoutMenu();
+                    break;
+                case ConsoleKey.D3:
+                    break;
+            }
+        }
+
+        private void CheckoutMenu()
+        {
+            ListParkedVehicles();
+            bool regNumberIsValid = false;
+            RegistrationNumber userEnteredRegNumber;
+            while (true)
+            {
+                Console.Write("Ange registreringsnumret för ett parkerat fordon (3 siffror följt av 3 bokstäver utan mellanslag): ");
+                string userEnteredString = Console.ReadLine();
+                regNumberIsValid = RegistrationNumber.TryCreate(userEnteredString, out userEnteredRegNumber);
+                if (_garage.Checkout(userEnteredRegNumber) is not null)
+                {
+                    Console.WriteLine($"Fordonet är utc");
+                }
+            }
+        }
+
+        private void ParkMenu()
+        {
+            throw new NotImplementedException();
         }
 
         internal void ListParkedVehicles()
