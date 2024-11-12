@@ -28,11 +28,11 @@ public abstract class Vehicle : ITimed
         return $"{this.RegistrationNumber.RegNumber,-8} {this.GetType().Name,-6} {this.Color,-8}  {misc}";
     }
 
-    public void StartTimedAction()
+    public void StartTimer()
     {
         _parkingStartTime = DateTime.Now;
     }
-    public void EndTimedAction()
+    public void EndTimer()
     {
         _parkingEndTime = DateTime.Now;
     }

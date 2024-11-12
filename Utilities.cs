@@ -1,7 +1,7 @@
 ﻿
 namespace ParkingDeluxe;
 
-public class Utilities
+public partial class Utilities
 {
     internal static Vehicle GetRandomVehicle()
     {
@@ -38,13 +38,13 @@ public class Utilities
 
     private static string GetRandomColor()
     {
-        string[] ColorsAsArray = Enum.GetNames(typeof(Colors));
-        return ColorsAsArray[Random.Shared.Next(ColorsAsArray.Length)];
+        string[] colors = Colors.AvailableColors;
+        return colors[Random.Shared.Next(colors.Length)];
     }
     private static string GetRandomMcBrand()
     {
-        string[] BrandsAsArray = Enum.GetNames(typeof(McBrands));
-        return BrandsAsArray[Random.Shared.Next(BrandsAsArray.Length)];
+        string[] mcBrands = McBrands.AvailableBrands;
+        return mcBrands[Random.Shared.Next(mcBrands.Length)];
     }
     private enum Colors
     {
