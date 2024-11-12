@@ -1,8 +1,11 @@
 ﻿
+
 namespace ParkingDeluxe
 {
     public class ParkingSpace
     {
+        private const double CostPerMinute = 1.5;
+
         public List<HalfParkingSpot> ParkingSpots { get; }
         public int Count { get => ParkingSpots.Count; }
         public ParkingSpace(int size)
@@ -159,6 +162,10 @@ namespace ParkingDeluxe
             else return null;
         }
 
+        public double ParkingFee(Vehicle checkedOutVehicle)
+        {
+            return checkedOutVehicle.GetElapsedTime().Seconds * CostPerMinute;
+        }
     }
 
 
