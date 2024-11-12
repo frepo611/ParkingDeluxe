@@ -2,7 +2,7 @@
 
 public interface ITimed
 {
-    void StartTimedAction();
-    void EndTimedAction();
+    void StartTimer();
+    void EndTimer();
     TimeSpan GetElapsedTime();
 }
