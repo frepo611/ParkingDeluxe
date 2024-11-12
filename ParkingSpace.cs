@@ -111,187 +111,48 @@ namespace ParkingDeluxe
             }
             return startIndex;
         }
-
-        public ParkingSpace(int size)
+        public Vehicle? Checkout(Vehicle vehicle)
         {
-            ParkingSpots = new List<HalfParkingSpot>(size * 2);
-            for (int i = 0; i < (size * 2); i++)
-            {
-                ParkingSpots.Add(new HalfParkingSpot(i));
-            }
-        }
-
-        public bool Park(Vehicle vehicle)
-        {
-            bool parkingSuccess;
-            if (vehicle is Car)
-            {
-                Car car = (Car)vehicle;
-                parkingSuccess = Park(car);
-            }
-            else if (vehicle is MC)
-            {
-                MC mc = (MC)vehicle;
-                return Park(mc);
-            }
-            else if (vehicle is Bus)
-            {
-                Bus bus = (Bus)vehicle;
-                return Park(bus);
-            }
-            else throw new ArgumentException("Cannot park this vehicle.");
-            vehicle.StartTimedAction();
-            return parkingSuccess;
-        }
-        public bool Checkout(Vehicle vehicle)
-        {
-            bool checkoutSuccess = false;
             if (vehicle is null)
-                return checkoutSuccess;
-            if (vehicle is Car)
             {
-                Car car = (Car)vehicle;
-                checkoutSuccess = Checkout(car);
+                return null;
             }
-            else if (vehicle is MC)
+            Vehicle? checkedOutVehicle = null;
+            for (int i = 0; i < Count - vehicle.Size; i++)
             {
-                MC mc = (MC)vehicle;
-                checkoutSuccess = Checkout(mc);
+                if (ParkingSpots[i].OccupyingVechicle == vehicle)
+                {
+                    checkedOutVehicle = ParkingSpots[i].OccupyingVechicle;
+                    for (int j = 0; j < vehicle.Size; j++)
+                    {
+                        ParkingSpots[i + j].OccupyingVechicle = null;
+                        ParkingSpots[i + j].IsEmpty = true;
+                    }
+                }
             }
-            else if (vehicle is Bus)
+            if (checkedOutVehicle is not null)
             {
-                Bus bus = (Bus)vehicle;
-                checkoutSuccess = Checkout(bus);
+                vehicle.EndTimer();
+                return checkedOutVehicle;
             }
-            vehicle.EndTimedAction();
-            return checkoutSuccess;
+            return null;
+        }
+        public Vehicle? Checkout(RegistrationNumber regNumber)
+        {
+            Vehicle? foundVehicle = null;
+            foreach (var spot in ParkingSpots.Where(spot => spot.OccupyingVechicle is not null))
+            {
+                if (regNumber == spot.OccupyingVechicle.RegistrationNumber)
+                {
+                    foundVehicle = spot.OccupyingVechicle;
+                    break;
+                }
+            }
+            if (foundVehicle is not null)
+                return Checkout(foundVehicle);
+            else return null;
         }
 
-        private bool Park(Car car)
-        {
-            int parkingSpotIndex = GetStartOfLargestEmptySpace();
-            bool parkingSuccess = false;
-
-            // park in the largest empty space
-            if (ParkingSpots[parkingSpotIndex].IsEmpty && ParkingSpots[parkingSpotIndex + 1].IsEmpty)
-            {
-                parkingSuccess = true;
-            }
-            if (parkingSuccess)
-            {
-                ParkingSpots[parkingSpotIndex].OccupyingVechicle = car;
-                ParkingSpots[parkingSpotIndex + 1].OccupyingVechicle = car;
-                ParkingSpots[parkingSpotIndex].IsEmpty = false;
-                ParkingSpots[parkingSpotIndex + 1].IsEmpty = false;
-            }
-            return parkingSuccess;
-        }
-        private bool Park(MC mc)
-        {
-            int parkingSpotIndex = 0;
-            bool parkingSuccess = false;
-            // check if there is already a parked MC in an even spot with a free odd spot
-            for (parkingSpotIndex = 1; parkingSpotIndex < Count; parkingSpotIndex += 2)
-            {
-                if (!ParkingSpots[parkingSpotIndex - 1].IsEmpty && ParkingSpots[parkingSpotIndex].IsEmpty)
-                {
-                    parkingSuccess = true;
-                    break;
-                }
-            }
-            // check all even spots
-            if (!parkingSuccess)
-            {
-                parkingSpotIndex = GetStartOfLargestEmptySpace();
-                if (ParkingSpots[parkingSpotIndex].IsEmpty)
-                {
-                    parkingSuccess = true;
-                }
-            }
-            if (parkingSuccess)
-            {
-                ParkingSpots[parkingSpotIndex].OccupyingVechicle = mc;
-                ParkingSpots[parkingSpotIndex].IsEmpty = false;
-            }
-            return parkingSuccess;
-        }
-        private bool Park(Bus bus)
-        {
-            bool parkingSuccess = false;
-            int parkingSpotIndex = GetStartOfLargestEmptySpace();
-            if (ParkingSpots[parkingSpotIndex].IsEmpty
-                && ParkingSpots[parkingSpotIndex + 1].IsEmpty
-                && ParkingSpots[parkingSpotIndex + 2].IsEmpty
-                && ParkingSpots[parkingSpotIndex + 3].IsEmpty)
-            {
-                parkingSuccess = true;
-            }
-            if (parkingSuccess)
-            {
-                ParkingSpots[parkingSpotIndex].OccupyingVechicle = bus;
-                ParkingSpots[parkingSpotIndex].IsEmpty = false;
-                ParkingSpots[parkingSpotIndex + 1].OccupyingVechicle = bus;
-                ParkingSpots[parkingSpotIndex + 1].IsEmpty = false;
-                ParkingSpots[parkingSpotIndex + 2].OccupyingVechicle = bus;
-                ParkingSpots[parkingSpotIndex + 2].IsEmpty = false;
-                ParkingSpots[parkingSpotIndex + 3].OccupyingVechicle = bus;
-                ParkingSpots[parkingSpotIndex + 3].IsEmpty = false;
-            }
-            return parkingSuccess;
-        }
-        public bool Checkout(Car car)
-        {
-            bool checkoutSuccess = false;
-            for (int i = 0; i < Count; i++)
-            {
-                if (ParkingSpots[i].OccupyingVechicle == car)
-                {
-                    ParkingSpots[i].OccupyingVechicle = null;
-                    ParkingSpots[i + 1].OccupyingVechicle = null;
-                    ParkingSpots[i].IsEmpty = true;
-                    ParkingSpots[i + 1].IsEmpty = true;
-                    checkoutSuccess = true;
-                    break;
-                }
-            }
-            return checkoutSuccess;
-        }
-        private bool Checkout(MC mc)
-        {
-            bool checkoutSuccess = false;
-            for (int i = 0; i < Count; i++)
-            {
-                if (ParkingSpots[i].OccupyingVechicle == mc)
-                {
-                    ParkingSpots[i].OccupyingVechicle = null;
-                    ParkingSpots[i].IsEmpty = true;
-                    checkoutSuccess = true;
-                    break;
-                }
-            }
-            return checkoutSuccess;
-        }
-        private bool Checkout(Bus bus)
-        {
-            bool checkoutSuccess = false;
-            for (int i = 0; i < Count - 4; i += 4)
-            {
-                if (ParkingSpots[i].OccupyingVechicle == bus)
-                {
-                    ParkingSpots[i].OccupyingVechicle = null;
-                    ParkingSpots[i].IsEmpty = true;
-                    ParkingSpots[i + 1].OccupyingVechicle = null;
-                    ParkingSpots[i + 1].IsEmpty = true;
-                    ParkingSpots[i + 2].OccupyingVechicle = null;
-                    ParkingSpots[i + 2].IsEmpty = true;
-                    ParkingSpots[i + 3].OccupyingVechicle = null;
-                    ParkingSpots[i + 3].IsEmpty = true;
-                    checkoutSuccess = true;
-                    break;
-                }
-            }
-            return checkoutSuccess;
-        }
     }
 
 

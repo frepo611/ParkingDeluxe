@@ -23,8 +23,7 @@ namespace ParkingDeluxe
                         _garage.Park(Utilities.GetRandomVehicle());
                         break;
                     case ConsoleKey.C:
-                        Vehicle vehicle = Utilities.CheckoutRandomVehicle(_garage);
-                        Console.WriteLine($"{vehicle} was checked out. {vehicle.GetElapsedTime}");
+                        Utilities.CheckoutRandomVehicle(_garage);
                         Console.ReadKey();
                         break;
                     case ConsoleKey.Q:
