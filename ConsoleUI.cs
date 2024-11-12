@@ -23,7 +23,8 @@ namespace ParkingDeluxe
                         _garage.Park(Utilities.GetRandomVehicle());
                         break;
                     case ConsoleKey.C:
-                        Utilities.CheckoutRandomVehicle(_garage);
+                        Vehicle? vehicle = Utilities.CheckoutRandomVehicle(_garage);
+                        Console.WriteLine($"{vehicle} checked out. Parking time: {vehicle.GetElapsedTime().Seconds} seconds.");
                         Console.ReadKey();
                         break;
                     case ConsoleKey.Q:
@@ -34,68 +35,91 @@ namespace ParkingDeluxe
                 for (int i = 0; i < _garage.Count; i++)
                 {
                     {
-                        Console.WriteLine($"{_garage.ParkingSpots[i].ID}: {_garage.ParkingSpots[i].OccupyingVechicle}");
+                        Vehicle? occupyingVechicle = _garage.ParkingSpots[i].OccupyingVechicle;
+                        Console.WriteLine($"{_garage.ParkingSpots[i].ID}: {(occupyingVechicle == null ? String.Empty : occupyingVechicle.Describe())}");
                     }
                 }
-                //ShowMainMenu();
-                //ListParkedVehicles();
+                Console.ReadKey();
+                ShowMainMenu();
+                ListParkedVehicles();
             }
         }
 
         private void ShowMainMenu()
         {
-            Console.WriteLine("1. Parkera ett fordon");
-            Console.WriteLine("2. Checka ut ett fordon");
-            Console.WriteLine("3. Avsluta");
-
-            ConsoleKeyInfo keyPress = Console.ReadKey(true);
-            switch (keyPress.Key)
+            bool runAgain = true;
+            while (runAgain)
             {
-                case ConsoleKey.D1:
-                    ParkMenu();
-                    break;
-                case ConsoleKey.D2:
-                    CheckoutMenu();
-                    break;
-                case ConsoleKey.D3:
-                    break;
+                Console.WriteLine("1. Parkera ett fordon");
+                Console.WriteLine("2. Checka ut ett fordon");
+                Console.WriteLine("3. Avsluta");
+
+                ConsoleKeyInfo keyPress = Console.ReadKey(true);
+                switch (keyPress.Key)
+                {
+                    case ConsoleKey.D1:
+                        ParkMenu();
+                        break;
+                    case ConsoleKey.D2:
+                        CheckoutMenu();
+                        break;
+                    case ConsoleKey.D3:
+                        runAgain = false;
+                        break;
+                } 
             }
         }
 
         private void CheckoutMenu()
         {
+            bool runAgain = true;
             ListParkedVehicles();
-            bool regNumberIsValid = false;
-            RegistrationNumber userEnteredRegNumber;
-            while (true)
+            while (runAgain)
             {
-                Console.Write("Ange registreringsnumret för ett parkerat fordon (3 siffror följt av 3 bokstäver utan mellanslag): ");
-                string userEnteredString = Console.ReadLine();
-                regNumberIsValid = RegistrationNumber.TryCreate(userEnteredString, out userEnteredRegNumber);
-                if (_garage.Checkout(userEnteredRegNumber) is not null)
+                bool regNumberIsValid = false;
+                RegistrationNumber userEnteredRegNumber;
+                Console.Write("Ange registreringsnumret för ett parkerat fordon (3 siffror följt av 3 bokstäver utan mellanslag). Tomt registreringsnummer för att gå tillbaka: ");
+                string? userEnteredString = Console.ReadLine();
+                if (string.IsNullOrEmpty(userEnteredString))
                 {
-                    Console.WriteLine($"Fordonet är utc");
+                    runAgain = false;
+                    continue;
+                }
+                regNumberIsValid = RegistrationNumber.TryCreate(userEnteredString, out userEnteredRegNumber);
+                Vehicle? checkedOutVehicle = _garage.Checkout(userEnteredRegNumber);
+                if (checkedOutVehicle is not null)
+                {
+                    Console.WriteLine($"{checkedOutVehicle} är utcheckad. Parkeringskostnaden är {_garage.ParkingFee(checkedOutVehicle):C}");
                 }
             }
         }
 
         private void ParkMenu()
         {
-            throw new NotImplementedException();
+            return;
         }
 
         internal void ListParkedVehicles()
         {
+            if (_garage.Count == 0)
+            {
+                Console.WriteLine("Parkeringen är tom");
+                return;
+            }
             List<Vehicle> parkedVehicles = new();
             foreach (var parkingSpot in _garage.ParkingSpots)
             {
-                if (parkedVehicles.Contains(parkingSpot.OccupyingVechicle))
+
+                if (parkingSpot.OccupyingVechicle is not null)
                 {
-                    continue;
-                }
-                else
-                {
-                    parkedVehicles.Add(parkingSpot.OccupyingVechicle);
+                    if (parkedVehicles.Contains(parkingSpot.OccupyingVechicle))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        parkedVehicles.Add(parkingSpot.OccupyingVechicle);
+                    }
                 }
             }
             int parkedVechicleNumber = 1;

@@ -15,8 +15,12 @@ public abstract class Vehicle : ITimed
         Size = size;
 
     }
-    public override string ToString()
+    public string Describe()
     {   
+        if (this is null)
+        { 
+            return String.Empty;
+        }
         string misc = this switch
         {
             Car c => c.IsElectric ? "Elbil" : "Ingen elbil",
@@ -25,7 +29,11 @@ public abstract class Vehicle : ITimed
             _ => throw new InvalidOperationException("Unexpected vehicle type")
         };
 
-        return $"{this.RegistrationNumber.RegNumber,-8} {this.GetType().Name,-6} {this.Color,-8}  {misc}";
+        return $"{this.RegistrationNumber.RegNumber,-8} {this.GetType().Name,-6} {this.Color,-8}  {misc} {this._parkingStartTime.ToShortTimeString()}";
+    }
+    public override string ToString()
+    {
+        return $"{this.RegistrationNumber.RegNumber} {this.Color} {this.GetType().Name}";
     }
 
     public void StartTimer()
