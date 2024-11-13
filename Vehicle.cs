@@ -6,7 +6,6 @@ public abstract class Vehicle : ITimed
     public abstract string TypeName { get; }
     public string Color { get; }
     public int Size { get; }
-
     private DateTime _parkingStartTime;
     private DateTime _parkingEndTime;
     public Vehicle(RegistrationNumber regNumber, string color, int size)
@@ -16,7 +15,7 @@ public abstract class Vehicle : ITimed
         Size = size;
 
     }
-    public string Describe()
+    public virtual string Describe()
     {   
         if (this is null)
         { 
@@ -30,11 +29,11 @@ public abstract class Vehicle : ITimed
             _ => throw new InvalidOperationException("Unexpected vehicle type")
         };
 
-        return $"{this.RegistrationNumber.RegNumber,-8} {this.GetType().Name,-6} {this.Color,-8}  {misc} {this._parkingStartTime.ToShortTimeString()}";
+        return $"{this.RegistrationNumber.RegNumber,-18} {this.TypeName,-10} {this.Color,-8}  {misc}";
     }
     public override string ToString()
     {
-        return $"{this.RegistrationNumber.RegNumber} {this.Color} {this.GetType().Name}";
+        return $"{this.Color} {this.TypeName} ({this.RegistrationNumber.RegNumber})";
     }
 
     public void StartTimer()
