@@ -15,31 +15,31 @@ namespace ParkingDeluxe
             bool runAgain = true;
             while (runAgain)
             {
-                Console.WriteLine("P or C");
-                ConsoleKeyInfo keyPress = Console.ReadKey(true);
-                switch (keyPress.Key)
-                {
-                    case ConsoleKey.P:
-                        _garage.Park(Utilities.GetRandomVehicle());
-                        break;
-                    case ConsoleKey.C:
-                        Vehicle? vehicle = Utilities.CheckoutRandomVehicle(_garage);
-                        Console.WriteLine($"{vehicle} checked out. Parking time: {vehicle.GetElapsedTime().Seconds} seconds.");
-                        Console.ReadKey();
-                        break;
-                    case ConsoleKey.Q:
-                        runAgain = false;
-                        break;
-                }
-                Console.Clear();
-                for (int i = 0; i < _garage.Count; i++)
-                {
-                    {
-                        Vehicle? occupyingVechicle = _garage.ParkingSpots[i].OccupyingVechicle;
-                        Console.WriteLine($"{_garage.ParkingSpots[i].ID}: {(occupyingVechicle == null ? String.Empty : occupyingVechicle.Describe())}");
-                    }
-                }
-                Console.ReadKey();
+            //    Console.WriteLine("P or C");
+            //    ConsoleKeyInfo keyPress = Console.ReadKey(true);
+            //    switch (keyPress.Key)
+            //    {
+            //        case ConsoleKey.P:
+            //            _garage.Park(Utilities.GetRandomVehicle());
+            //            break;
+            //        case ConsoleKey.C:
+            //            Vehicle? vehicle = Utilities.CheckoutRandomVehicle(_garage);
+            //            Console.WriteLine($"{vehicle} checked out. Parking time: {vehicle.GetElapsedTime().Seconds} seconds.");
+            //            Console.ReadKey();
+            //            break;
+            //        case ConsoleKey.Q:
+            //            runAgain = false;
+            //            break;
+            //    }
+            //    Console.Clear();
+            //    for (int i = 0; i < _garage.Count; i++)
+            //    {
+            //        {
+            //            Vehicle? occupyingVechicle = _garage.ParkingSpots[i].OccupyingVechicle;
+            //            Console.WriteLine($"{_garage.ParkingSpots[i].ID}: {(occupyingVechicle == null ? String.Empty : occupyingVechicle.Describe())}");
+            //        }
+            //    }
+            //    Console.ReadKey();
                 ShowMainMenu();
                 ListParkedVehicles();
             }
@@ -106,28 +106,70 @@ namespace ParkingDeluxe
                 Console.WriteLine("Parkeringen är tom");
                 return;
             }
-            List<Vehicle> parkedVehicles = new();
-            foreach (var parkingSpot in _garage.ParkingSpots)
-            {
 
-                if (parkingSpot.OccupyingVechicle is not null)
+
+    internal void ListParkingSpace()
+    {
+        Console.SetCursorPosition(0, 1);
+        HashSet<Vehicle> displayedVehicles = new();
+        Console.WriteLine($"{" ",15} {"Registreringsnummer"} {"Fordonstyp"} {"Färg",-8} {"Övrigt",-8}");
+        Console.WriteLine(new string('=',65));
+
+        for (int i = 0; i < _garage.ParkingSpots.Count; i += 2)
+        {
+            var spot1 = _garage.ParkingSpots[i];
+            var spot2 = i + 1 < _garage.ParkingSpots.Count ? _garage.ParkingSpots[i + 1] : null;
+
+            if (spot1.OccupyingVechicle is not null && displayedVehicles.Contains(spot1.OccupyingVechicle))
+            {
+                continue;
+            }
+
+            // Handle vehicles that take multiple spots
+            if (spot1.OccupyingVechicle is not null)
                 {
-                    if (parkedVehicles.Contains(parkingSpot.OccupyingVechicle))
+                var vehicle = spot1.OccupyingVechicle;
+                int vehicleSpan = vehicle.Size;
+                int endSpot = (i + vehicleSpan - 1) / 2 + 1;
+
+                if (vehicleSpan > 2)
                     {
+                    Console.WriteLine($"{$"Plats {i / 2 + 1}-{endSpot}:",-15} {vehicle.Describe()}");
+                    displayedVehicles.Add(vehicle);
                         continue;
                     }
-                    else
+            }
+
+            // Handle motorcycle pairs
+            if (spot1.OccupyingVechicle is MC && spot2?.OccupyingVechicle is MC)
                     {
-                        parkedVehicles.Add(parkingSpot.OccupyingVechicle);
+                Console.WriteLine($"{$"Plats {i / 2 + 1}a:",-15} {spot1.OccupyingVechicle.Describe()}");
+                Console.WriteLine($"{$"Plats {i / 2 + 1}b:",-15} {spot2.OccupyingVechicle.Describe()}");
+                displayedVehicles.Add(spot1.OccupyingVechicle);
+                displayedVehicles.Add(spot2.OccupyingVechicle);
+                continue;
                     }
-                }
-            }
-            int parkedVechicleNumber = 1;
-            foreach (var vehicle in parkedVehicles)
+
+            // Handle regular vehicles
+            string pairInfo = $"{$"Plats {i / 2 + 1}: ",-15} ";
+            if (spot1.OccupyingVechicle is not null)
             {
-                Console.WriteLine($"{parkedVechicleNumber}. {vehicle}");
-                parkedVechicleNumber++;
+                pairInfo += spot1.OccupyingVechicle.Describe();
+                displayedVehicles.Add(spot1.OccupyingVechicle);
+                }
+            else if (spot2?.OccupyingVechicle is not null && !displayedVehicles.Contains(spot2.OccupyingVechicle))
+            {
+                pairInfo += spot2.OccupyingVechicle.Describe();
+                displayedVehicles.Add(spot2.OccupyingVechicle);
             }
+            else
+            {
+                pairInfo += "Tom";
+            }
+            Console.WriteLine(pairInfo);
         }
+        Console.WriteLine();
     }
+
+
 }
