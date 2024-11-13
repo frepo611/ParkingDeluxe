@@ -72,6 +72,15 @@ namespace ParkingDeluxe;
         ListParkingSpace();
         }
 
+    private void ListParkedVehicles()
+    {
+        Console.WriteLine("Dessa fordon finns på parkeringen:");
+        foreach (var vehicle in _garage.ParkedVehicles)
+        {
+            Console.WriteLine(vehicle);   
+        }
+    }
+
         private void ParkMenu()
         {
             return;
