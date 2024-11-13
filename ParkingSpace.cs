@@ -8,6 +8,7 @@ namespace ParkingDeluxe
 
         public List<HalfParkingSpot> ParkingSpots { get; }
         public int Count { get => ParkingSpots.Count; }
+        public Dictionary<RegistrationNumber, Vehicle> ParkedVehicles {get;}
         public ParkingSpace(int size)
         {
             ParkingSpots = new List<HalfParkingSpot>(size * 2);
@@ -15,6 +16,7 @@ namespace ParkingDeluxe
             {
                 ParkingSpots.Add(new HalfParkingSpot(i));
             }
+            ParkedVehicles = new Dictionary<RegistrationNumber, Vehicle>();
         }
 
         public bool Park(Vehicle vehicle)
@@ -22,11 +24,13 @@ namespace ParkingDeluxe
             if (ParkFirstPerfectFit(vehicle))
             {
                 vehicle.StartTimer();
+                ParkedVehicles.TryAdd(vehicle.RegistrationNumber, vehicle);
                 return true;
             }
             else if (ParkFirstFit(vehicle))
             {
                 vehicle.StartTimer();
+                ParkedVehicles.TryAdd(vehicle.RegistrationNumber, vehicle);
                 return true;
             }
             return false;
@@ -142,6 +146,7 @@ namespace ParkingDeluxe
             if (checkedOutVehicle is not null)
             {
                 vehicle.EndTimer();
+                ParkedVehicles.Remove(checkedOutVehicle.RegistrationNumber);
                 return checkedOutVehicle;
             }
             return null;
