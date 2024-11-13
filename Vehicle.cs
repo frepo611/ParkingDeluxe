@@ -3,6 +3,7 @@
 public abstract class Vehicle : ITimed
 {
     public RegistrationNumber RegistrationNumber { get;}
+    public abstract string TypeName { get; }
     public string Color { get; }
     public int Size { get; }
 
