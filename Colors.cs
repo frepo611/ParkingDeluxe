@@ -12,12 +12,12 @@ public static class Colors
     public const string Silver = "Silver";
     public static string[] AvailableColors =>
 [
+        Black,
         White,
         Red,
         Green,
+        Yellow,
         Blue,
         Silver,
-        Black,
-        Yellow
     ];
 }
