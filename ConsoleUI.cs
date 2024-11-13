@@ -1,6 +1,7 @@
 ﻿
-namespace ParkingDeluxe
-{
+
+namespace ParkingDeluxe;
+
     internal class ConsoleUI
     {
         private ParkingSpace _garage;
@@ -12,36 +13,9 @@ namespace ParkingDeluxe
 
         internal void Start()
         {
-            bool runAgain = true;
-            while (runAgain)
             {
-            //    Console.WriteLine("P or C");
-            //    ConsoleKeyInfo keyPress = Console.ReadKey(true);
-            //    switch (keyPress.Key)
-            //    {
-            //        case ConsoleKey.P:
-            //            _garage.Park(Utilities.GetRandomVehicle());
-            //            break;
-            //        case ConsoleKey.C:
-            //            Vehicle? vehicle = Utilities.CheckoutRandomVehicle(_garage);
-            //            Console.WriteLine($"{vehicle} checked out. Parking time: {vehicle.GetElapsedTime().Seconds} seconds.");
-            //            Console.ReadKey();
-            //            break;
-            //        case ConsoleKey.Q:
-            //            runAgain = false;
-            //            break;
-            //    }
-            //    Console.Clear();
-            //    for (int i = 0; i < _garage.Count; i++)
-            //    {
-            //        {
-            //            Vehicle? occupyingVechicle = _garage.ParkingSpots[i].OccupyingVechicle;
-            //            Console.WriteLine($"{_garage.ParkingSpots[i].ID}: {(occupyingVechicle == null ? String.Empty : occupyingVechicle.Describe())}");
-            //        }
-            //    }
-            //    Console.ReadKey();
+            ListParkingSpace();
                 ShowMainMenu();
-                ListParkedVehicles();
             }
         }
 
@@ -52,9 +26,10 @@ namespace ParkingDeluxe
             {
                 Console.WriteLine("1. Parkera ett fordon");
                 Console.WriteLine("2. Checka ut ett fordon");
-                Console.WriteLine("3. Avsluta");
+            Console.WriteLine("Q. Avsluta");
 
                 ConsoleKeyInfo keyPress = Console.ReadKey(true);
+
                 switch (keyPress.Key)
                 {
                     case ConsoleKey.D1:
@@ -63,7 +38,7 @@ namespace ParkingDeluxe
                     case ConsoleKey.D2:
                         CheckoutMenu();
                         break;
-                    case ConsoleKey.D3:
+                case ConsoleKey.Q:
                         runAgain = false;
                         break;
                 } 
@@ -74,6 +49,8 @@ namespace ParkingDeluxe
         {
             bool runAgain = true;
             ListParkedVehicles();
+        Console.WriteLine();
+
             while (runAgain)
             {
                 bool regNumberIsValid = false;
@@ -92,6 +69,7 @@ namespace ParkingDeluxe
                     Console.WriteLine($"{checkedOutVehicle} är utcheckad. Parkeringskostnaden är {_garage.ParkingFee(checkedOutVehicle):C}");
                 }
             }
+        ListParkingSpace();
         }
 
         private void ParkMenu()
