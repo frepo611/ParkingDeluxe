@@ -8,7 +8,7 @@ namespace ParkingDeluxe
 
         public List<HalfParkingSpot> ParkingSpots { get; }
         public int Count { get => ParkingSpots.Count; }
-        public Dictionary<RegistrationNumber, Vehicle> ParkedVehicles {get;}
+        public Dictionary<RegistrationNumber, Vehicle> ParkedVehicles { get; }
         public ParkingSpace(int size)
         {
             ParkingSpots = new List<HalfParkingSpot>(size * 2);
@@ -38,11 +38,49 @@ namespace ParkingDeluxe
 
         private bool ParkFirstPerfectFit(Vehicle vehicle)
         {
+            if (vehicle.Size == 1)
+            {
+                int i = 0;
+                bool perfectFit = false;
+                for (i = 0; i < ParkingSpots.Count; i++)
+                {
+                    if (i == 0 && !ParkingSpots[i + 1].IsEmpty)
+                    {
+                        ParkingSpots[i].IsEmpty = false;
+                        ParkingSpots[i].OccupyingVechicle = vehicle;
+                        return perfectFit;
+                    }
+                    else if ((i == ParkingSpots.Count - 1) && !ParkingSpots[i - 1].IsEmpty)
+                    {
+                        ParkingSpots[i].IsEmpty = false;
+                        ParkingSpots[i].OccupyingVechicle = vehicle;
+                        return perfectFit;
+                    }
+                    else if (i > 1 && (i < ParkingSpots.Count - 1))
+                    {
+                        if (ParkingSpots[i].IsEmpty
+                            && !ParkingSpots[i - 1].IsEmpty
+                            && !ParkingSpots[i + 1].IsEmpty)
+                        {
+                            ParkingSpots[i].IsEmpty = false;
+                            ParkingSpots[i].OccupyingVechicle = vehicle;
+                            return perfectFit;
+                        }
+                    }
+                }
+                if (perfectFit)
+                {
+                    ParkingSpots[i].IsEmpty = false;
+                    ParkingSpots[i].OccupyingVechicle = vehicle;
+                    return perfectFit;
+                }
+            }
+
             for (int i = 0; i < Count - vehicle.Size; i += (vehicle.Size == 1) ? 1 : 2)
             {
                 bool perfectFit = true;
                 // check if the entire vehicle can fit
-                for (global::System.Int32 j = 0; j < vehicle.Size; j++)
+                for (int j = 0; j < vehicle.Size; j++)
                 {
                     if (!ParkingSpots[i + j].IsEmpty)
                     {
