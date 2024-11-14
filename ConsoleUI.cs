@@ -16,18 +16,18 @@ internal class ConsoleUI
     {
         {
             Console.CursorVisible = true;
-            ListParkingSpace();
             ShowMainMenu();
         }
     }
 
     private void ShowMainMenu()
     {
-        Console.SetCursorPosition(0, _setCursorTop);
         bool runAgain = true;
-        WriteLineWithPadding("Huvudmeny");
         while (runAgain)
         {
+            Console.Clear();
+            ListParkingSpace();
+            WriteLineWithPadding("Huvudmeny");
             WriteLineWithPadding("1. Parkera ett fordon");
             WriteLineWithPadding("2. Checka ut ett fordon");
             WriteLineWithPadding("Q. Avsluta");
@@ -55,21 +55,21 @@ internal class ConsoleUI
 
     private void CheckoutMenu()
     {
-        Console.SetCursorPosition(0, _setCursorTop);
         if (_garage.ParkedVehicles.Count == 0)
         {
             WriteLineWithPadding("Det finns inga parkerade fordon.");
             return;
         }
         bool runAgain = true;
-        ListParkedVehicles();
-        Console.WriteLine();
+        Console.Clear();
+        ListParkingSpace();
 
+        ListParkedVehicles();
         while (runAgain)
         {
             bool regNumberIsValid = false;
             RegistrationNumber userEnteredRegNumber;
-            Console.Write("Ange registreringsnumret för ett parkerat fordon (3 siffror följt av 3 bokstäver utan mellanslag). Tomt registreringsnummer för att gå till den tidigare menyn: ");
+            Console.Write("Ange registreringsnumret för ett parkerat fordon (3 siffror följt av 3 bokstäver utan mellanslag).\nTomt registreringsnummer för att gå till den tidigare menyn: ");
             string? userEnteredString = Console.ReadLine();
             if (string.IsNullOrEmpty(userEnteredString))
             {
@@ -80,8 +80,9 @@ internal class ConsoleUI
             Vehicle? checkedOutVehicle = _garage.Checkout(userEnteredRegNumber);
             if (checkedOutVehicle is not null)
             {
-                WriteLineWithPadding($"{checkedOutVehicle} är utcheckad. Parkeringskostnaden är {_garage.ParkingFee(checkedOutVehicle):C}");
+                Console.Clear();
                 ListParkingSpace();
+                WriteLineWithPadding($"{checkedOutVehicle} är utcheckad. Parkeringskostnaden är {_garage.ParkingFee(checkedOutVehicle):C}");
             }
         }
     }
@@ -97,20 +98,17 @@ internal class ConsoleUI
 
     private void ParkMenu()
     {
-        Console.SetCursorPosition(0, _setCursorTop);
         bool runAgain = true;
-        Console.WriteLine("Parkeringsmeny");
         while (runAgain)
         {
+            Console.Clear();
+            ListParkingSpace();
+            Console.WriteLine("Parkeringsmeny");
             WriteLineWithPadding("Vad för typ av fordon vill du parkera?");
             WriteLineWithPadding("1. MC");
             WriteLineWithPadding("2. Bil");
             WriteLineWithPadding("3. Buss");
             WriteLineWithPadding("Q. Gå till den tidigare menyn");
-            for (int i = 0; i < 5; i++)
-            {
-                WriteLineWithPadding("");
-            }
 
             ConsoleKeyInfo keyPress = Console.ReadKey(true);
             switch (keyPress.Key)
@@ -122,12 +120,10 @@ internal class ConsoleUI
                     CarMenu();
                     break;
                 case ConsoleKey.D3:
-                    runAgain = false;
                     BusMenu();
                     break;
                 case ConsoleKey.Q:
                     runAgain = false;
-                    Console.SetCursorPosition(0, _setCursorTop);
                     break;
                 default:
                     break;
@@ -137,7 +133,8 @@ internal class ConsoleUI
 
     private void BusMenu()
     {
-        Console.SetCursorPosition(0, _setCursorTop);
+        Console.Clear();
+        ListParkingSpace();
         WriteLineWithPadding("Checka in en buss");
         RegistrationNumber registrationNumber = RegistrationNumber.GetRandom();
         WriteLineWithPadding($"Registreringsnummer: {registrationNumber.RegNumber}");
@@ -151,7 +148,6 @@ internal class ConsoleUI
             passengersIsValid = int.TryParse(Console.ReadLine(), out passengers);
         }
         Bus busToPark = new Bus(registrationNumber, vehicleColor, passengers);
-        Console.SetCursorPosition(0, _setCursorTop - 1);
         if (_garage.Park(busToPark))
         {
             WriteLineWithPadding($"{busToPark} är parkerad");
@@ -202,7 +198,8 @@ internal class ConsoleUI
 
     private void CarMenu()
     {
-        Console.SetCursorPosition(0, _setCursorTop - 1);
+        Console.Clear();
+        ListParkingSpace();
         WriteLineWithPadding("Parkera en bil");
         RegistrationNumber registrationNumber = RegistrationNumber.GetRandom();
         WriteLineWithPadding($"Registreringsnummer: {registrationNumber.RegNumber}");
@@ -229,7 +226,6 @@ internal class ConsoleUI
             }
         }
         Car carToPark = new Car(registrationNumber, vehicleColor, isElectric);
-        Console.SetCursorPosition(0, _setCursorTop - 1);
         if (_garage.Park(carToPark))
         {
             WriteLineWithPadding($"{carToPark} är parkerad.");
@@ -243,6 +239,8 @@ internal class ConsoleUI
 
     internal void MCMenu()
     {
+        Console.Clear();
+        ListParkingSpace();
         RegistrationNumber registrationNumber = RegistrationNumber.GetRandom();
         WriteLineWithPadding($"Registreringsnummer: {registrationNumber.RegNumber}");
 
@@ -260,11 +258,11 @@ internal class ConsoleUI
             Console.SetCursorPosition(0, _setCursorTop - 1);
             WriteLineWithPadding("MC:n kunde inte parkeras");
         }
+        Console.Clear();
         ListParkingSpace();
     }
     private string GetMCBrandFromUser()
     {
-        Console.SetCursorPosition(0, _setCursorTop - 1);
         bool validBrand = false;
         string mcBrand = McBrands.AvailableBrands[0];
 
@@ -381,12 +379,13 @@ internal class ConsoleUI
         ListParkingSpace();
         while (true)
         {
+            Console.SetCursorPosition(0, 20);
             if (Random.Shared.Next(0, 2) > 0)
             {
                 var vehicleToPark = Utilities.GetRandomVehicle();
-                Console.WriteLine($"{vehicleToPark} is getting parked");
+                Console.WriteLine($"{vehicleToPark} is getting parked {new string(' ',20)}");
                 _garage.Park(vehicleToPark);
-                Console.WriteLine("Paused...");
+                Console.WriteLine($"{"Paused...",-40}");
                 Console.ReadKey();
                 ListParkingSpace();
             }
@@ -394,13 +393,13 @@ internal class ConsoleUI
             {
                 var vehicleToCheckOut = Utilities.CheckoutRandomVehicle(_garage);
                 _garage.Checkout(vehicleToCheckOut);
-                Console.WriteLine("Paused...");
-                Console.WriteLine($"{vehicleToCheckOut} was checked out {vehicleToCheckOut.GetElapsedTime().Seconds}");
+                Console.WriteLine($"{"Paused...",-40}");
+                Console.WriteLine($"{vehicleToCheckOut} was checked out {vehicleToCheckOut.GetElapsedTime().TotalSeconds:F0}");
                 Console.ReadKey();
                 ListParkingSpace();
             }
-            Console.SetCursorPosition(0,20);
-            
+            Console.SetCursorPosition(0, 20);
+
         }
     }
 }
