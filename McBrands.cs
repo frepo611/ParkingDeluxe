@@ -1,5 +1,4 @@
-﻿
-namespace ParkingDeluxe;
+﻿namespace ParkingDeluxe;
 
 public static class McBrands
 {
@@ -11,10 +10,12 @@ public static class McBrands
     public const string Honda = "Honda";
 
     public static string[] AvailableBrands =>
-        [HD,
+    [   
+        HD,
         BMW,
         Yamaha,
         Suzuki,
         Aprilia,
-        Honda];
+        Honda
+        ];
 }

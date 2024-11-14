@@ -1,14 +1,13 @@
-﻿
-
-namespace ParkingDeluxe;
+﻿namespace ParkingDeluxe;
 
 public class ParkingSpace
 {
     private const double CostPerMinute = 1.5;
 
     public List<HalfParkingSpot> ParkingSpots { get; }
-    public int Count { get => ParkingSpots.Count; }
+    public int Count => ParkingSpots.Count;
     public Dictionary<RegistrationNumber, Vehicle> ParkedVehicles { get; }
+
     public ParkingSpace(int size)
     {
         ParkingSpots = new List<HalfParkingSpot>(size * 2);
@@ -40,7 +39,7 @@ public class ParkingSpace
     {
         bool isPerfectFit = false;
 
-        if (vehicle.Size == 1) // Special case
+        if (vehicle.Size == 1)
         {
             int i = 0;
             for (i = 0; i < ParkingSpots.Count; i++)
@@ -49,29 +48,16 @@ public class ParkingSpace
                     && ParkingSpots[i].IsEmpty
                     && !ParkingSpots[i + 1].IsEmpty) // first spot is perfect
                 {
-                    //ParkingSpots[i].IsEmpty = false;
-                    //ParkingSpots[i].OccupyingVechicle = vehicle;
                     isPerfectFit = true;
                     break;
                 }
-                //else if (i == 0 && ParkingSpots[i + 1].IsEmpty)
-                //{
-                //    //ParkingSpots[i].IsEmpty = false;
-                //    //ParkingSpots[i].OccupyingVechicle = vehicle;
-                //    perfectFit = true;
-                //    break;
-                //}
                 else if ((i == ParkingSpots.Count - 1) && !ParkingSpots[i - 1].IsEmpty) //second to last spot is perfect
                 {
-                    //ParkingSpots[i].IsEmpty = false;
-                    //ParkingSpots[i].OccupyingVechicle = vehicle;
                     isPerfectFit = true;
                     break;
                 }
                 else if ((i == ParkingSpots.Count) && ParkingSpots[i - 1].IsEmpty) //last spot is perfect
                 {
-                    //ParkingSpots[i].IsEmpty = false;
-                    //ParkingSpots[i].OccupyingVechicle = vehicle;
                     isPerfectFit = true;
                     break;
                 }
@@ -132,7 +118,6 @@ public class ParkingSpace
         }
         return isPerfectFit;
     }
-
 
     private bool ParkFirstFit(Vehicle vehicle)
     {
@@ -238,4 +223,3 @@ public class ParkingSpace
         return checkedOutVehicle.GetElapsedTime().Seconds * CostPerMinute;
     }
 }
-

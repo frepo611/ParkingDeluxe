@@ -1,12 +1,11 @@
-﻿
-
-namespace ParkingDeluxe;
+﻿namespace ParkingDeluxe;
 
 internal class ConsoleUI
 {
     private readonly ParkingSpace _garage;
     private const int _setCursorTop = 20;
     private const int _minLineLength = 40;
+
     public ConsoleUI(ParkingSpace garage)
     {
         _garage = garage;
@@ -31,13 +30,13 @@ internal class ConsoleUI
             WriteLineWithPadding("1. Parkera ett fordon");
             WriteLineWithPadding("2. Checka ut ett fordon");
             WriteLineWithPadding("Q. Avsluta");
+
             for (int i = 0; i < 5; i++)
             {
                 WriteLineWithPadding("");
             }
 
             ConsoleKeyInfo keyPress = Console.ReadKey(true);
-
             switch (keyPress.Key)
             {
                 case ConsoleKey.D1:
@@ -60,11 +59,12 @@ internal class ConsoleUI
             WriteLineWithPadding("Det finns inga parkerade fordon.");
             return;
         }
+
         bool runAgain = true;
         Console.Clear();
         ListParkingSpace();
-
         ListParkedVehicles();
+
         while (runAgain)
         {
             bool regNumberIsValid = false;
@@ -76,8 +76,10 @@ internal class ConsoleUI
                 runAgain = false;
                 continue;
             }
+
             regNumberIsValid = RegistrationNumber.TryCreate(userEnteredString, out userEnteredRegNumber);
             Vehicle? checkedOutVehicle = _garage.Checkout(userEnteredRegNumber);
+
             if (checkedOutVehicle is not null)
             {
                 Console.Clear();
@@ -142,6 +144,7 @@ internal class ConsoleUI
 
         int passengers = 0;
         bool passengersIsValid = false;
+
         while (!passengersIsValid)
         {
             Console.Write("Hur många passagerare: ");
@@ -157,13 +160,14 @@ internal class ConsoleUI
             WriteLineWithPadding("Fordonet kunde inte parkeras.");
         }
         ListParkingSpace();
-
     }
+
     private string GetColorFromUser()
     {
         bool validColor = false;
         string vehicleColor = Colors.AvailableColors[0];
         WriteLineWithPadding("Välj fordonets färg:");
+
         while (!validColor)
         {
             for (int i = 0; i < Colors.AvailableColors.Length; i++)
@@ -195,7 +199,6 @@ internal class ConsoleUI
         return vehicleColor;
     }
 
-
     private void CarMenu()
     {
         Console.Clear();
@@ -203,10 +206,11 @@ internal class ConsoleUI
         WriteLineWithPadding("Parkera en bil");
         RegistrationNumber registrationNumber = RegistrationNumber.GetRandom();
         WriteLineWithPadding($"Registreringsnummer: {registrationNumber.RegNumber}");
-        string vehicleColor = GetColorFromUser();
 
+        string vehicleColor = GetColorFromUser();
         bool isElectric = false;
         bool validChoice = false;
+
         while (!validChoice)
         {
             WriteLineWithPadding($"{"Är det en elbil (J/N)? ",-40}");
@@ -225,7 +229,9 @@ internal class ConsoleUI
                     break;
             }
         }
+
         Car carToPark = new Car(registrationNumber, vehicleColor, isElectric);
+
         if (_garage.Park(carToPark))
         {
             WriteLineWithPadding($"{carToPark} är parkerad.");
@@ -248,6 +254,7 @@ internal class ConsoleUI
         string mcBrand = GetMCBrandFromUser();
 
         MC mcToPark = new MC(registrationNumber, vehicleColor, mcBrand);
+
         if (_garage.Park(mcToPark))
         {
             Console.SetCursorPosition(0, _setCursorTop - 1);
@@ -258,9 +265,11 @@ internal class ConsoleUI
             Console.SetCursorPosition(0, _setCursorTop - 1);
             WriteLineWithPadding("MC:n kunde inte parkeras");
         }
+
         Console.Clear();
         ListParkingSpace();
     }
+
     private string GetMCBrandFromUser()
     {
         bool validBrand = false;
@@ -291,15 +300,14 @@ internal class ConsoleUI
             };
 
             validBrand = !string.IsNullOrEmpty(mcBrand);
+
             if (!validBrand)
             {
                 Console.WriteLine("Ogiltigt val. Försök igen.");
             }
         }
-
         return mcBrand;
     }
-
 
     internal void ListParkingSpace()
     {
@@ -372,11 +380,14 @@ internal class ConsoleUI
     internal void StartSim()
     {
         ListParkingSpace();
+
         for (int i = 0; i < 5; i++)
         {
             _garage.Park(Utilities.GetRandomVehicle());
         }
+
         ListParkingSpace();
+
         while (true)
         {
             Console.SetCursorPosition(0, 20);
@@ -398,8 +409,8 @@ internal class ConsoleUI
                 Console.ReadKey();
                 ListParkingSpace();
             }
-            Console.SetCursorPosition(0, 20);
 
+            Console.SetCursorPosition(0, 20);
         }
     }
 }

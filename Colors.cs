@@ -1,5 +1,4 @@
-﻿
-namespace ParkingDeluxe;
+﻿namespace ParkingDeluxe;
 
 public static class Colors
 {
@@ -10,6 +9,7 @@ public static class Colors
     public const string Yellow = "Gul";
     public const string Blue = "Blå";
     public const string Silver = "Silver";
+
     public static string[] AvailableColors =>
 [
         Black,

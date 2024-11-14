@@ -8,13 +8,14 @@ public abstract class Vehicle : ITimed
     public int Size { get; }
     private DateTime _parkingStartTime;
     private DateTime _parkingEndTime;
+
     public Vehicle(RegistrationNumber regNumber, string color, int size)
     {
         RegistrationNumber = regNumber;   
         Color = color;
         Size = size;
-
     }
+
     public virtual string Describe()
     {   
         if (this is null)
@@ -31,6 +32,7 @@ public abstract class Vehicle : ITimed
 
         return $"{this.RegistrationNumber.RegNumber,-18} {this.TypeName,-10} {this.Color,-8}  {misc,-20}";
     }
+    
     public override string ToString()
     {
         return $"{this.Color} {this.TypeName} ({this.RegistrationNumber.RegNumber})";
@@ -40,13 +42,14 @@ public abstract class Vehicle : ITimed
     {
         _parkingStartTime = DateTime.Now;
     }
+    
     public void EndTimer()
     {
         _parkingEndTime = DateTime.Now;
     }
+    
     public TimeSpan GetElapsedTime()
     {
         return _parkingEndTime - _parkingStartTime;
     }
-
 }
