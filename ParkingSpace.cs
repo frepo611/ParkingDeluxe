@@ -40,7 +40,7 @@ public class ParkingSpace
 
         if (vehicle.Size == 1)
         {
-            int i = 0;
+            int i;
             for (i = 0; i < ParkingSpots.Count; i++)
             {
                 if (i == 0
@@ -144,36 +144,7 @@ public class ParkingSpace
         }
         return false;
     }
-
-    private int GetStartOfLargestEmptySpace()
-    {
-
-        int startIndex = 0;
-        int largestSpace = 0;
-        int currentSpace = 0;
-        int currentIndex = 0;
-        for (int i = 0; i < Count - 2; i += 2)
-        {
-            if (ParkingSpots[i].IsEmpty && ParkingSpots[i + 1].IsEmpty)
-            {
-                if (currentSpace == 0) // start a new contiguous space
-                {
-                    currentIndex = i;
-                }
-                currentSpace++;
-                if (currentSpace > largestSpace)
-                {
-                    largestSpace = currentSpace;
-                    startIndex = currentIndex;
-                }
-            }
-            else
-            {
-                currentSpace = 0;
-            }
-        }
-        return startIndex;
-    }
+ 
     public Vehicle? Checkout(Vehicle vehicle)
     {
         if (vehicle is null)
@@ -204,7 +175,7 @@ public class ParkingSpace
     public Vehicle? Checkout(RegistrationNumber regNumber)
     {
         Vehicle? foundVehicle = null;
-        foreach (var spot in ParkingSpots.Where(spot => spot.OccupyingVechicle is not null))
+        foreach (HalfParkingSpot spot in ParkingSpots.Where(spot => spot.OccupyingVechicle is not null))
         {
             if (regNumber == spot.OccupyingVechicle.RegistrationNumber)
             {

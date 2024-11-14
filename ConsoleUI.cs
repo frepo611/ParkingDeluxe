@@ -68,7 +68,7 @@ internal class ConsoleUI
         while (runAgain)
         {
             bool regNumberIsValid = false;
-            RegistrationNumber userEnteredRegNumber;
+            RegistrationNumber? userEnteredRegNumber;
             Console.Write("Ange registreringsnumret för ett parkerat fordon (3 siffror följt av 3 bokstäver utan mellanslag).\nTomt registreringsnummer för att gå till den tidigare menyn: ");
             string? userEnteredString = Console.ReadLine();
             if (string.IsNullOrEmpty(userEnteredString))
@@ -402,10 +402,10 @@ internal class ConsoleUI
             }
             else
             {
-                var vehicleToCheckOut = Utilities.CheckoutRandomVehicle(_garage);
+                Vehicle? vehicleToCheckOut = Utilities.CheckoutRandomVehicle(_garage);
                 _garage.Checkout(vehicleToCheckOut);
                 Console.WriteLine($"{"Paused...",-40}");
-                Console.WriteLine($"{vehicleToCheckOut} was checked out {vehicleToCheckOut.GetElapsedTime().TotalSeconds:F0}");
+                Console.WriteLine($"{vehicleToCheckOut} was checked out {vehicleToCheckOut.GetElapsedTime().TotalSeconds}");
                 Console.ReadKey();
                 ListParkingSpace();
             }

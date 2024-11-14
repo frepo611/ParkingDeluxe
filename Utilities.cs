@@ -1,7 +1,7 @@
 ﻿
 namespace ParkingDeluxe;
 
-public partial class Utilities
+public class Utilities
 {
     internal static Vehicle GetRandomVehicle()
     {
@@ -27,7 +27,7 @@ public partial class Utilities
 
     private static Car GetRandomCar()
     {
-        bool isElectric = (Random.Shared.Next(0, 2) > 0) ? true : false;
+        bool isElectric = Random.Shared.Next(0, 2) > 0;
         return new Car(RegistrationNumber.GetRandom(), GetRandomColor(), isElectric);
     }
 
@@ -57,8 +57,8 @@ public partial class Utilities
         }
         return checkedOutVehicle;
     }
-    public static double ParkingTime(ITimed checkedOutVehicle)
+    public static double ParkingTime(ITimed timedObject)
     {
-        return checkedOutVehicle.GetElapsedTime().TotalSeconds;
+        return timedObject.GetElapsedTime().TotalSeconds;
     }
 }
