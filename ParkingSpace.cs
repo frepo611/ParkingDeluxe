@@ -76,10 +76,10 @@ namespace ParkingDeluxe
                 }
             }
 
-            for (int i = 0; i < Count - vehicle.Size; i += (vehicle.Size == 1) ? 1 : 2)
+            for (int i = 0; i < Count - vehicle.Size; i += 2)
             {
                 bool perfectFit = true;
-                // check if the entire vehicle can fit
+                // check if the vehicle perfecly fits in a spot
                 for (int j = 0; j < vehicle.Size; j++)
                 {
                     if (!ParkingSpots[i + j].IsEmpty)
@@ -112,7 +112,7 @@ namespace ParkingDeluxe
             {
                 bool canFit = true;
                 // check if the entire vehicle can fit
-                for (global::System.Int32 j = 0; j < vehicle.Size; j++)
+                for (int j = 0; j < vehicle.Size; j++)
                 {
                     if (!ParkingSpots[i + j].IsEmpty)
                     {
