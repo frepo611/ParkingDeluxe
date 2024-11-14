@@ -30,7 +30,7 @@ public abstract class Vehicle : ITimed
             _ => throw new InvalidOperationException("Unexpected vehicle type")
         };
 
-        return $"{this.RegistrationNumber.RegNumber,-18} {this.TypeName,-10} {this.Color,-8}  {misc,-20}";
+        return $"{this.RegistrationNumber.RegNumber,-19} {this.TypeName,-10} {this.Color,-7}  {misc,-20}";
     }
     
     public override string ToString()
