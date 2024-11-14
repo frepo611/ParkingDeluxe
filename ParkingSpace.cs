@@ -44,27 +44,43 @@ namespace ParkingDeluxe
                 bool perfectFit = false;
                 for (i = 0; i < ParkingSpots.Count; i++)
                 {
-                    if (i == 0 && !ParkingSpots[i + 1].IsEmpty)
+                    if (i == 0 && !ParkingSpots[i + 1].IsEmpty) // first spot is perfect
                     {
-                        ParkingSpots[i].IsEmpty = false;
-                        ParkingSpots[i].OccupyingVechicle = vehicle;
-                        return perfectFit;
+                        //ParkingSpots[i].IsEmpty = false;
+                        //ParkingSpots[i].OccupyingVechicle = vehicle;
+                        perfectFit = true;
+                        break;
                     }
-                    else if ((i == ParkingSpots.Count - 1) && !ParkingSpots[i - 1].IsEmpty)
+                    //else if (i == 0 && ParkingSpots[i + 1].IsEmpty)
+                    //{
+                    //    //ParkingSpots[i].IsEmpty = false;
+                    //    //ParkingSpots[i].OccupyingVechicle = vehicle;
+                    //    perfectFit = true;
+                    //    break;
+                    //}
+                    else if ((i == ParkingSpots.Count - 1) && !ParkingSpots[i - 1].IsEmpty) //last spot is perfect
                     {
-                        ParkingSpots[i].IsEmpty = false;
-                        ParkingSpots[i].OccupyingVechicle = vehicle;
-                        return perfectFit;
+                        //ParkingSpots[i].IsEmpty = false;
+                        //ParkingSpots[i].OccupyingVechicle = vehicle;
+                        perfectFit = true;
+                        break;
                     }
-                    else if (i > 1 && (i < ParkingSpots.Count - 1))
+                    else if ((i == ParkingSpots.Count) && ParkingSpots[i - 1].IsEmpty) //last spot is perfect
+                    {
+                        //ParkingSpots[i].IsEmpty = false;
+                        //ParkingSpots[i].OccupyingVechicle = vehicle;
+                        perfectFit = true;
+                        break;
+                    }
+                    else if (i > 0 && (i < ParkingSpots.Count - 1))
                     {
                         if (ParkingSpots[i].IsEmpty
-                            && !ParkingSpots[i - 1].IsEmpty
-                            && !ParkingSpots[i + 1].IsEmpty)
+                            && !ParkingSpots[i - 1].IsEmpty)
                         {
                             ParkingSpots[i].IsEmpty = false;
                             ParkingSpots[i].OccupyingVechicle = vehicle;
-                            return perfectFit;
+                            perfectFit = true;
+                            break;
                         }
                     }
                 }
@@ -74,23 +90,27 @@ namespace ParkingDeluxe
                     ParkingSpots[i].OccupyingVechicle = vehicle;
                     return perfectFit;
                 }
+                return perfectFit;
             }
 
             for (int i = 0; i < Count - vehicle.Size; i += 2)
             {
                 bool perfectFit = true;
-                // check if the vehicle perfecly fits in a spot
-                for (int j = 0; j < vehicle.Size; j++)
+                if (ParkingSpots[i].IsEmpty)
                 {
-                    if (!ParkingSpots[i + j].IsEmpty)
+                    // check if the vehicle perfecly fits in a spot
+                    for (int j = 0; j < vehicle.Size; j++)
                     {
-                        perfectFit = false;
-                        break;
-                    }
-                    if (!ParkingSpots[i + vehicle.Size].IsEmpty)
-                    {
-                        perfectFit = false;
-                        break;
+                        if (!ParkingSpots[i + j].IsEmpty)
+                        {
+                            perfectFit = false;
+                            continue;
+                        }
+                        if (!ParkingSpots[i + vehicle.Size].IsEmpty)
+                        {
+                            perfectFit = false;
+                            continue;
+                        }
                     }
                 }
                 if (perfectFit)

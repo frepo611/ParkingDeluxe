@@ -12,8 +12,8 @@ internal class Program
        
         ParkingSpace garage = new(15);
         ConsoleUI UI = new ConsoleUI(garage);
-        //UI.Start();
-        UI.StartSim();
+        UI.Start();
+        //UI.StartSim();
 
 
     }
