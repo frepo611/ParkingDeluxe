@@ -49,10 +49,11 @@ public partial class Utilities
     public static Vehicle? CheckoutRandomVehicle(ParkingSpace parking)
     {
         Vehicle? checkedOutVehicle = null;
-        while (checkedOutVehicle == null)
+        if (parking.ParkedVehicles.Count > 0)
         {
-            int randomSpot = Random.Shared.Next(parking.ParkingSpots.Count);
-            checkedOutVehicle = parking.Checkout(parking.ParkingSpots[randomSpot].OccupyingVechicle);
+            int randomIndex = Random.Shared.Next(parking.ParkedVehicles.Count);
+            return parking.ParkedVehicles.ElementAt(randomIndex).Value;
+
         }
         return checkedOutVehicle;
     }

@@ -332,5 +332,27 @@ internal class ConsoleUI
         Console.WriteLine();
     }
 
+    internal void StartSim()
+    {
+        ListParkingSpace();
+        for (int i = 0; i < 5; i++)
+        {
+            _garage.Park(Utilities.GetRandomVehicle());
+        }
+        ListParkingSpace();
+        while (true)
+        {
+            if (Random.Shared.Next(0, 2) > 0)
+            {
+                _garage.Park(Utilities.GetRandomVehicle());
+                ListParkingSpace();
+                Thread.Sleep(1000);
+            }
+            else
+            {
+                _garage.Checkout(Utilities.CheckoutRandomVehicle(_garage));
+                ListParkingSpace();
+                Thread.Sleep(1000);
+            }
 
 }
