@@ -1,6 +1,8 @@
-﻿namespace ParkingDeluxe;
+﻿using System.Text.RegularExpressions;
 
-public class RegistrationNumber
+namespace ParkingDeluxe;
+
+public record RegistrationNumber // TODO record?
 {
     private readonly int _numbers;
     private readonly string _letters;
@@ -8,7 +10,7 @@ public class RegistrationNumber
     public RegistrationNumber(string letters, int numbers)
     {
         _numbers = numbers;
-        _letters = letters;
+        _letters = letters.ToUpper();
     }
 public static RegistrationNumber GetRandom()
     {
@@ -23,5 +25,24 @@ public static RegistrationNumber GetRandom()
         }
 
         return new RegistrationNumber(letters, numbers);
+    }
+
+    internal static bool TryCreate(string? userEnteredString, out RegistrationNumber userEnteredRegNumber)
+    {
+        userEnteredRegNumber = null;
+        if (IsValid(userEnteredString))
+            {
+                userEnteredRegNumber = new RegistrationNumber(userEnteredString[..3], int.Parse(userEnteredString[3..]));
+                return true;
+            }
+        return false;
+    }
+
+    private static bool IsValid(string userEnteredString)
+    {
+        if (userEnteredString.Length != 6)
+            return false;
+        string regExPattern = @"^[A-Za-zåÅäÄöÖ]{3}\d{3}$";
+        return Regex.IsMatch(userEnteredString, regExPattern);
     }
 }

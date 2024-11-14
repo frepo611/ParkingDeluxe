@@ -1,7 +1,7 @@
 ﻿
 namespace ParkingDeluxe;
 
-public class Utilities
+public partial class Utilities
 {
     internal static Vehicle GetRandomVehicle()
     {
@@ -38,40 +38,23 @@ public class Utilities
 
     private static string GetRandomColor()
     {
-        string[] ColorsAsArray = Enum.GetNames(typeof(Colors));
-        return ColorsAsArray[Random.Shared.Next(ColorsAsArray.Length)];
+        string[] colors = Colors.AvailableColors;
+        return colors[Random.Shared.Next(colors.Length)];
     }
     private static string GetRandomMcBrand()
     {
-        string[] BrandsAsArray = Enum.GetNames(typeof(McBrands));
-        return BrandsAsArray[Random.Shared.Next(BrandsAsArray.Length)];
+        string[] mcBrands = McBrands.AvailableBrands;
+        return mcBrands[Random.Shared.Next(mcBrands.Length)];
     }
-    private enum Colors
+    public static Vehicle? CheckoutRandomVehicle(ParkingSpace parking)
     {
-        Black,
-        White,
-        Red,
-        Green,
-        Yellow,
-        Blue,
-        Silver
-    }
-    private enum McBrands
-    {
-        HarleyDavidson,
-        BMW,
-        Yamaha,
-        Suzuki,
-        Aprilia,
-        Honda
-    }
-    public static void CheckoutRandomVehicle(ParkingSpace parking)
-    {
-        bool vehicleCheckedOut = false;
-        while (!vehicleCheckedOut)
+        Vehicle? checkedOutVehicle = null;
+        if (parking.ParkedVehicles.Count > 0)
         {
-            int randomSpot = Random.Shared.Next(parking.ParkingSpots.Count);
-            vehicleCheckedOut = parking.Checkout(parking.ParkingSpots[randomSpot].OccupiedBy);
+            int randomIndex = Random.Shared.Next(parking.ParkedVehicles.Count);
+            return parking.ParkedVehicles.ElementAt(randomIndex).Value;
+
         }
+        return checkedOutVehicle;
     }
 }
