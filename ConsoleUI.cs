@@ -383,17 +383,24 @@ internal class ConsoleUI
         {
             if (Random.Shared.Next(0, 2) > 0)
             {
-                _garage.Park(Utilities.GetRandomVehicle());
+                var vehicleToPark = Utilities.GetRandomVehicle();
+                Console.WriteLine($"{vehicleToPark} is getting parked");
+                _garage.Park(vehicleToPark);
+                Console.WriteLine("Paused...");
+                Console.ReadKey();
                 ListParkingSpace();
-                Thread.Sleep(1000);
             }
             else
             {
-                _garage.Checkout(Utilities.CheckoutRandomVehicle(_garage));
+                var vehicleToCheckOut = Utilities.CheckoutRandomVehicle(_garage);
+                _garage.Checkout(vehicleToCheckOut);
+                Console.WriteLine("Paused...");
+                Console.WriteLine($"{vehicleToCheckOut} was checked out {vehicleToCheckOut.GetElapsedTime().Seconds}");
+                Console.ReadKey();
                 ListParkingSpace();
-                Thread.Sleep(1000);
             }
-
+            Console.SetCursorPosition(0,20);
+            
         }
     }
 }
