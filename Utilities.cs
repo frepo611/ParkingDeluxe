@@ -57,4 +57,8 @@ public partial class Utilities
         }
         return checkedOutVehicle;
     }
+    public static double ParkingTime(ITimed checkedOutVehicle)
+    {
+        return checkedOutVehicle.GetElapsedTime().TotalSeconds;
+    }
 }

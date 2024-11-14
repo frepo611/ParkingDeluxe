@@ -2,8 +2,7 @@
 
 public class ParkingSpace
 {
-    private const double CostPerMinute = 1.5;
-
+    public double CostPerMinute = 1.5;
     public List<HalfParkingSpot> ParkingSpots { get; }
     public int Count => ParkingSpots.Count;
     public Dictionary<RegistrationNumber, Vehicle> ParkedVehicles { get; }
@@ -218,8 +217,5 @@ public class ParkingSpace
         else return null;
     }
 
-    public double ParkingFee(Vehicle checkedOutVehicle)
-    {
-        return checkedOutVehicle.GetElapsedTime().Seconds * CostPerMinute;
-    }
+    
 }

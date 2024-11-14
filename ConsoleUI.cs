@@ -84,7 +84,7 @@ internal class ConsoleUI
             {
                 Console.Clear();
                 ListParkingSpace();
-                WriteLineWithPadding($"{checkedOutVehicle} är utcheckad. Parkeringskostnaden är {_garage.ParkingFee(checkedOutVehicle):C}");
+                WriteLineWithPadding($"{checkedOutVehicle} är utcheckad. Parkeringskostnaden är {(Utilities.ParkingTime(checkedOutVehicle) * _garage.CostPerMinute):C}");
             }
         }
     }
