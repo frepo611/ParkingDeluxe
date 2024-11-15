@@ -47,8 +47,9 @@ public static class Utilities
             int randomIndex = Random.Shared.Next(parking.ParkedVehicles.Count);
             return parking.ParkedVehicles.ElementAt(randomIndex).Value;
     }
-    public static double GetElapsedMinutes(this ITimed timedObject) // an extension method, det är väl nice
+
+    public static int GetElapsedMinutes(this ITimed timedObject) // an extension method, det är väl nice
     {
-        return timedObject.ElapsedTime().TotalMinutes;
+        return (int)Math.Ceiling(timedObject.ElapsedTime().TotalMinutes);
     }
 }
