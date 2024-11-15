@@ -46,15 +46,11 @@ public static class Utilities
         string[] mcBrands = McBrands.AvailableBrands;
         return mcBrands[Random.Shared.Next(mcBrands.Length)];
     }
-    public static Vehicle? CheckoutRandomVehicle(ParkingSpace parking)
+    public static Vehicle CheckoutRandomVehicle(ParkingSpace parking)
     {
-        Vehicle? checkedOutVehicle = null;
-        if (parking.ParkedVehicles.Count > 0)
-        {
             int randomIndex = Random.Shared.Next(parking.ParkedVehicles.Count);
             return parking.ParkedVehicles.ElementAt(randomIndex).Value;
-
-        }
+    }
     public static double GetElapsedMinutes(this ITimed timedObject) // an extension method, det är väl nice
     {
         return timedObject.ElapsedTime().TotalMinutes;
