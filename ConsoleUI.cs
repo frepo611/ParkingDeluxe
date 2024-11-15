@@ -73,9 +73,12 @@ internal class ConsoleUI
                 runAgain = false;
                 continue;
             }
-
-            regNumberIsValid = RegistrationNumber.TryCreate(userEnteredString, out userEnteredRegNumber);
-            Vehicle? checkedOutVehicle = _garage.Checkout(userEnteredRegNumber);
+            Vehicle? checkedOutVehicle = null;
+            RegistrationNumber.TryCreate(userEnteredString, out RegistrationNumber? userEnteredRegNumber);
+            if (userEnteredRegNumber is not null)
+            { 
+                checkedOutVehicle = _garage.Checkout(userEnteredRegNumber);
+            }
 
             if (checkedOutVehicle is not null)
             {
@@ -168,7 +171,7 @@ internal class ConsoleUI
         ListParkingSpace();
     }
 
-    private static RegistrationNumber GetRegistrationNumber()
+    private static RegistrationNumber? GetRegistrationNumber()
     {
         bool runAgain = true;
         RegistrationNumber? registrationNumber = null;
