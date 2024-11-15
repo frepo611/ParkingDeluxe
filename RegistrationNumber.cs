@@ -2,7 +2,7 @@
 
 namespace ParkingDeluxe;
 
-public record RegistrationNumber // TODO record?
+public record RegistrationNumber
 {
     private readonly int _numbers;
     private readonly string _letters;
@@ -14,7 +14,7 @@ public record RegistrationNumber // TODO record?
         _letters = letters.ToUpper();
     }
 
-public static RegistrationNumber GetRandom()
+    public static RegistrationNumber GetRandom()
     {
         int numbers = Random.Shared.Next(1000);
         string swedishAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ";
@@ -33,17 +33,20 @@ public static RegistrationNumber GetRandom()
     {
         userEnteredRegNumber = null;
         if (IsValid(userEnteredString))
-            {
-                userEnteredRegNumber = new RegistrationNumber(userEnteredString[..3], int.Parse(userEnteredString[3..]));
-                return true;
-            }
+        {
+            userEnteredRegNumber = new RegistrationNumber(userEnteredString[..3], int.Parse(userEnteredString[3..]));
+            return true;
+        }
         return false;
     }
 
     private static bool IsValid(string userEnteredString)
     {
         if (userEnteredString.Length != 6)
+        {
             return false;
+        }
+
         string regExPattern = @"^[A-Za-zåÅäÄöÖ]{3}\d{3}$";
         return Regex.IsMatch(userEnteredString, regExPattern);
     }

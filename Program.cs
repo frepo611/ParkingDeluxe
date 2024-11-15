@@ -4,16 +4,16 @@ namespace ParkingDeluxe;
 
 internal class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
         CultureInfo swedishCulture = new CultureInfo("sv-SE");
         CultureInfo.DefaultThreadCurrentCulture = swedishCulture;
-        CultureInfo.DefaultThreadCurrentUICulture = swedishCulture;
-       
+        //CultureInfo.DefaultThreadCurrentUICulture = swedishCulture;
+
         ParkingSpace garage = new(15);
         ConsoleUI UI = new ConsoleUI(garage);
         UI.Start();
-        //UI.StartSim();
+        UI.StartSim();
 
 
     }

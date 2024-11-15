@@ -1,5 +1,4 @@
-﻿
-namespace ParkingDeluxe;
+﻿namespace ParkingDeluxe;
 
 public static class Utilities
 {
@@ -37,11 +36,13 @@ public static class Utilities
         string[] colors = Colors.AvailableColors;
         return colors[Random.Shared.Next(colors.Length)];
     }
+
     private static string GetRandomMcBrand()
     {
         string[] mcBrands = McBrands.AvailableBrands;
         return mcBrands[Random.Shared.Next(mcBrands.Length)];
     }
+
     public static Vehicle CheckoutRandomVehicle(ParkingSpace parking)
     {
             int randomIndex = Random.Shared.Next(parking.ParkedVehicles.Count);

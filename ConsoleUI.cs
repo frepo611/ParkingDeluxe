@@ -3,7 +3,6 @@
 internal class ConsoleUI
 {
     private readonly ParkingSpace _garage;
-    private const int _setCursorTop = 20;
     private const int _minLineLength = 40;
 
     public ConsoleUI(ParkingSpace garage)
@@ -64,8 +63,6 @@ internal class ConsoleUI
 
         while (runAgain)
         {
-            bool regNumberIsValid = false;
-            RegistrationNumber? userEnteredRegNumber;
             Console.Write("Ange registreringsnumret för ett parkerat fordon (3 bokstäver följt 3 siffror av utan mellanslag).\nTomt registreringsnummer för att gå till den tidigare menyn: ");
             string? userEnteredString = Console.ReadLine();
             if (string.IsNullOrEmpty(userEnteredString))
@@ -197,7 +194,7 @@ internal class ConsoleUI
         return registrationNumber;
     }
 
-    private string GetColorFromUser()
+    private static string GetColorFromUser()
     {
         bool validColor = false;
         string vehicleColor = Colors.AvailableColors[0];
@@ -233,7 +230,7 @@ internal class ConsoleUI
 
         return vehicleColor;
     }
-    private static RegistrationNumber GetRegistrationFromUser()
+    private static RegistrationNumber? GetRegistrationFromUser()
     {
         bool runAgain = true;
         RegistrationNumber? userEnteredRegNumber = null;
@@ -341,7 +338,7 @@ internal class ConsoleUI
         ListParkingSpace();
     }
 
-    private string GetMCBrandFromUser()
+    private static string GetMCBrandFromUser()
     {
         bool validBrand = false;
         string mcBrand = McBrands.AvailableBrands[0];
@@ -439,7 +436,7 @@ internal class ConsoleUI
         Console.WriteLine();
     }
 
-    private void WriteLineWithPadding(string text)
+    private static void WriteLineWithPadding(string text)
     {
         Console.WriteLine(text.PadRight(_minLineLength));
     }
@@ -458,25 +455,28 @@ internal class ConsoleUI
         while (true)
         {
             Console.SetCursorPosition(0, 20);
-            if (Random.Shared.Next(0, 2) > 0)
+            if (Random.Shared.Next(0, 3) < 2)
             {
                 var vehicleToPark = Utilities.GetRandomVehicle();
                 Console.WriteLine($"{vehicleToPark} is getting parked {new string(' ', 20)}");
                 _garage.Park(vehicleToPark);
                 Console.WriteLine($"{"Paused...",-40}");
-                Console.ReadKey();
+                //Console.ReadKey();
                 ListParkingSpace();
             }
             else
             {
-                Vehicle? vehicleToCheckOut = Utilities.CheckoutRandomVehicle(_garage);
-                _garage.Checkout(vehicleToCheckOut);
-                Console.WriteLine($"{"Paused...",-40}");
+                if (_garage.ParkedVehicles.Count > 0)
+                {
+                    Vehicle vehicleToCheckOut = Utilities.CheckoutRandomVehicle(_garage);
+                    _garage.Checkout(vehicleToCheckOut);
+                    Console.WriteLine($"{"Paused...",-40}");
                     Console.WriteLine($"{vehicleToCheckOut} was checked out {vehicleToCheckOut.GetElapsedMinutes() * _garage.CostPerMinute:C}");
                     //Console.ReadKey();
-                ListParkingSpace();
+                    ListParkingSpace();
+                }
             }
-
+            Thread.Sleep(5000);
             Console.SetCursorPosition(0, 20);
         }
     }
