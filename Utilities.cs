@@ -1,7 +1,7 @@
 ﻿
 namespace ParkingDeluxe;
 
-public class Utilities
+public static class Utilities
 {
     internal static Vehicle GetRandomVehicle()
     {
@@ -55,10 +55,8 @@ public class Utilities
             return parking.ParkedVehicles.ElementAt(randomIndex).Value;
 
         }
-        return checkedOutVehicle;
-    }
-    public static double ParkingTime(ITimed timedObject)
+    public static double GetElapsedMinutes(this ITimed timedObject) // an extension method, det är väl nice
     {
-        return timedObject.GetElapsedTime().TotalSeconds;
+        return timedObject.ElapsedTime().TotalMinutes;
     }
 }

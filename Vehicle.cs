@@ -48,7 +48,7 @@ public abstract class Vehicle : ITimed
         _parkingEndTime = DateTime.Now;
     }
     
-    public TimeSpan GetElapsedTime()
+    public TimeSpan ElapsedTime()
     {
         return _parkingEndTime - _parkingStartTime;
     }

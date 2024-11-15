@@ -4,5 +4,5 @@ public interface ITimed
 {
     void StartTimer();
     void EndTimer();
-    TimeSpan GetElapsedTime();
+    TimeSpan ElapsedTime();
 }

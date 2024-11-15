@@ -81,7 +81,7 @@ internal class ConsoleUI
             {
                 Console.Clear();
                 ListParkingSpace();
-                WriteLineWithPadding($"{checkedOutVehicle} är utcheckad. Parkeringskostnaden är {(Utilities.ParkingTime(checkedOutVehicle) * _garage.CostPerMinute):C}");
+                WriteLineWithPadding($"{checkedOutVehicle} är utcheckad. Parkeringskostnaden är {(checkedOutVehicle.GetElapsedMinutes() * _garage.CostPerMinute):C}");
             }
         }
     }
@@ -469,8 +469,8 @@ internal class ConsoleUI
                 Vehicle? vehicleToCheckOut = Utilities.CheckoutRandomVehicle(_garage);
                 _garage.Checkout(vehicleToCheckOut);
                 Console.WriteLine($"{"Paused...",-40}");
-                Console.WriteLine($"{vehicleToCheckOut} was checked out {vehicleToCheckOut.GetElapsedTime().TotalSeconds}");
-                Console.ReadKey();
+                    Console.WriteLine($"{vehicleToCheckOut} was checked out {vehicleToCheckOut.GetElapsedMinutes() * _garage.CostPerMinute:C}");
+                    //Console.ReadKey();
                 ListParkingSpace();
             }
 

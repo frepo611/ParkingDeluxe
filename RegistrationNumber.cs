@@ -17,7 +17,7 @@ public record RegistrationNumber // TODO record?
 public static RegistrationNumber GetRandom()
     {
         int numbers = Random.Shared.Next(1000);
-                string swedishAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ";
+        string swedishAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ";
         string letters = "";
 
         for (int i = 0; i < 3; i++)
