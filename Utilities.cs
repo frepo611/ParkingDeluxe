@@ -6,17 +6,13 @@ public static class Utilities
     internal static Vehicle GetRandomVehicle()
     {
         int vehicleType = Random.Shared.Next(3);
-        switch (vehicleType)
+        return vehicleType switch
         {
-            case 0:
-                return GetRandomMC();
-            case 1:
-                return GetRandomCar();
-            case 2:
-                return GetRandomBus();
-            default:
-                throw new InvalidOperationException("Unexpected vehicle type"); // Fallback for safety
-        }
+            0 => GetRandomMC(),
+            1 => GetRandomCar(),
+            2 => GetRandomBus(),
+            _ => throw new InvalidOperationException("Unexpected vehicle type"),
+        };
     }
 
     private static Bus GetRandomBus()
